@@ -11,7 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Get Key Vault URL from configuration
-var keyVaultUrl = builder.Configuration["AzureKeyVault:VaultUri"];
+//var keyVaultUrl = builder.Configuration["AzureKeyVault:VaultUri"];
+var keyVaultUrl = "https://myref.vault.azure.net/";
 // Add Azure Key Vault to the ConfigurationBuilder
 
 if (!string.IsNullOrEmpty(keyVaultUrl))
