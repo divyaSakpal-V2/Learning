@@ -11,8 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Get Key Vault URL from configuration
-//var keyVaultUrl = builder.Configuration["AzureKeyVault:VaultUri"];
-var keyVaultUrl = "https://myref.vault.azure.net/";
+var keyVaultUrl = builder.Configuration["AzureKeyVault:VaultUri"];
+
 // Add Azure Key Vault to the ConfigurationBuilder
 
 if (!string.IsNullOrEmpty(keyVaultUrl))
@@ -31,8 +31,8 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
