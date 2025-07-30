@@ -1,31 +1,51 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LearningProject1.ServiceLayer;
+using LearningProject1.ServiceLayer.DTOs;
+using LearningProject1.ServiceLayer.Implementation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningProject1.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        List<string> Topics;
-        public TopicsController()
+        public readonly ITopicService _topicService;
+       
+        public TopicsController(ITopicService topicService)
         {
-            Topics = new List<string>() { "Azure", "Dot net" };
+            _topicService = topicService;
         }
 
-        // GET: api/<TopicsController>
+        [HttpGet("/topics")]
+        public async Task<List<string>> GetAllTopics()
+        {
+            return await _topicService.GetAllTopics();
+        }
+        [HttpGet("/Topics/search/{name}")]
+        public async Task<List<string>> searchTopics(string name)
+        {
+            return await _topicService.searchTopics(name);
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<List<LinkDto>> GetAllLinks()
         {
-            return Topics;
+            return await _topicService.GetAllLinks();
         }
 
-        // GET api/<TopicsController>/5
-        [HttpGet("{name}")]
-        public IEnumerable<string> Get(string name)
+        [HttpGet("/Links/byTopic/{name}")]
+        public async Task<List<LinkDto>> searchLinks(string name)
         {
-            return Topics.FindAll(x => x.Contains(name, StringComparison.OrdinalIgnoreCase));
+            return await _topicService.searchLinks(name);
         }
+
+        [HttpPost]
+        public async Task<bool> SaveLink(LinkDto linkDto)
+        {
+            return await _topicService.SaveLink(linkDto);
+        }
+
     }
 }

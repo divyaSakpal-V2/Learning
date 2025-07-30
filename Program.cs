@@ -1,5 +1,10 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using LearningProject1.Repository;
+using LearningProject1.Repository.Implementation;
+using LearningProject1.ServiceLayer;
+using LearningProject1.ServiceLayer.Implementation;
+using Microsoft.Azure.Cosmos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +32,17 @@ if (!string.IsNullOrEmpty(keyVaultUrl))
         builder.Configuration[secret.Name] = secretValue.Value.Value;
     }
 }
+
+builder.Services.AddSingleton(s =>
+{
+    var cosmosEndpoint = builder.Configuration["CosmosDb:Endpoint"];
+    var cosmosKey = builder.Configuration["PrimaryKey"];
+    return new CosmosClient(cosmosEndpoint, cosmosKey);
+});
+
+builder.Services.AddScoped<IRepository,Repository>();
+builder.Services.AddScoped<ITopicService, TopicService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
