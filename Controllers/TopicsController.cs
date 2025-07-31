@@ -11,40 +11,89 @@ namespace LearningProject1.Controllers
     [ApiController]
     public class TopicsController : ControllerBase
     {
-        public readonly ITopicService _topicService;
-       
-        public TopicsController(ITopicService topicService)
+        readonly ITopicService _topicService;
+        readonly ILogger<TopicsController> _logger;
+
+
+        public TopicsController(ITopicService topicService, ILogger<TopicsController> logger)
         {
             _topicService = topicService;
+            _logger = logger;
+
         }
 
         [HttpGet("/topics")]
-        public async Task<List<string>> GetAllTopics()
+        public async Task<IActionResult> GetAllTopics()
         {
-            return await _topicService.GetAllTopics();
+            try
+            {
+              var  result = await _topicService.GetAllTopics();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet("/Topics/search/{name}")]
-        public async Task<List<string>> searchTopics(string name)
+        public async Task<IActionResult> searchTopics(string name)
         {
-            return await _topicService.searchTopics(name);
+            try
+            {
+                var result = await _topicService.searchTopics(name);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
-        public async Task<List<LinkDto>> GetAllLinks()
+        public async Task<IActionResult> GetAllLinks()
         {
-            return await _topicService.GetAllLinks();
+            try
+            {
+               var result = await _topicService.GetAllLinks();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("/Links/byTopic/{name}")]
-        public async Task<List<LinkDto>> searchLinks(string name)
+        public async Task<IActionResult> searchLinks(string name)
         {
-            return await _topicService.searchLinks(name);
+            try
+            {
+               var  result = await _topicService.searchLinks(name);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<bool> SaveLink(LinkDto linkDto)
+        public async Task<IActionResult> SaveLink(LinkDto linkDto)
         {
-            return await _topicService.SaveLink(linkDto);
+            try
+            {
+                var result = await _topicService.SaveLink(linkDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
     }
