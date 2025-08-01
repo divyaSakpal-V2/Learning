@@ -29,6 +29,7 @@ builder.Services.Configure<AzureFileLoggerOptions>(options => {
 
 builder.Services.Configure<AzureBlobLoggerOptions>(options => {
     options.BlobName = "tryingbloblog-";
+    options.IsEnabled = true;
 });
 //////////////////////////////////////////////////////////////////////////////////////////////
 
