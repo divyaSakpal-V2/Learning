@@ -24,7 +24,7 @@ namespace LearningProject1.Repository.Implementation
         public async Task<bool> Upload(IFormFile file)
         {
             string x = file.Name;
-            BlobClient blobClient = _containerClient.GetBlobClient(file.FileName + ".pdf");
+            BlobClient blobClient = _containerClient.GetBlobClient(file.FileName);
 
            // using (FileStream fileStream = (FileStream)file.OpenReadStream())
             {
