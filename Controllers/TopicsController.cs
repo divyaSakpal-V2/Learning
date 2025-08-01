@@ -27,7 +27,8 @@ namespace LearningProject1.Controllers
         {
             try
             {
-              var  result = await _topicService.GetAllTopics();
+                _logger.LogInformation("get all topics ");
+                var  result = await _topicService.GetAllTopics();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -41,6 +42,7 @@ namespace LearningProject1.Controllers
         {
             try
             {
+                _logger.LogInformation("search for topic " + name);
                 var result = await _topicService.searchTopics(name);
                 return Ok(result);
             }
@@ -56,7 +58,8 @@ namespace LearningProject1.Controllers
         {
             try
             {
-               var result = await _topicService.GetAllLinks();
+                _logger.LogInformation("All links request");
+                var result = await _topicService.GetAllLinks();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -71,7 +74,8 @@ namespace LearningProject1.Controllers
         {
             try
             {
-               var  result = await _topicService.searchLinks(name);
+                _logger.LogInformation("search links request" + name);
+                var  result = await _topicService.searchLinks(name);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -86,6 +90,7 @@ namespace LearningProject1.Controllers
         {
             try
             {
+                _logger.LogInformation("save link request for topic "+ linkDto.Topic );
                 var result = await _topicService.SaveLink(linkDto);
                 return Ok(result);
             }

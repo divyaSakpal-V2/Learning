@@ -1,5 +1,6 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Azure.Storage.Blobs;
 using LearningProject1.Controllers;
 using LearningProject1.Repository;
 using LearningProject1.Repository.Implementation;
@@ -20,14 +21,16 @@ builder.Services.AddSwaggerGen();
 //////////////////////////////////////////////////Logs in azure /////////////////////////////////
 builder.Logging.AddAzureWebAppDiagnostics();
 
-builder.Services.Configure<AzureFileLoggerOptions>(options => {
+builder.Services.Configure<AzureFileLoggerOptions>(options =>
+{
     options.FileName = "tryingfilelog-";
     options.RetainedFileCountLimit = 5;
     options.FileSizeLimit = 50 * 1024;
     options.IsEnabled = true;
-    });
+});
 
-builder.Services.Configure<AzureBlobLoggerOptions>(options => {
+builder.Services.Configure<AzureBlobLoggerOptions>(options =>
+{
     options.BlobName = "tryingbloblog-";
     options.IsEnabled = true;
 });
@@ -52,14 +55,25 @@ if (!string.IsNullOrEmpty(keyVaultUrl))
     }
 }
 
+//register cosmos service client 
 builder.Services.AddSingleton(s =>
 {
     var cosmosEndpoint = builder.Configuration["CosmosDb:Endpoint"];
     var cosmosKey = builder.Configuration["PrimaryKey"];
     return new CosmosClient(cosmosEndpoint, cosmosKey);
 });
+
+//register blob service client
+builder.Services.AddSingleton(x =>
+{
+    var storage = builder.Configuration["BlobStorage:Storage"];
+    return new BlobServiceClient(storage);
+});
+
 builder.Services.AddSingleton<ILogger<TopicsController>, Logger<TopicsController>>();
-builder.Services.AddScoped<IRepository,Repository>();
+builder.Services.AddSingleton<ILogger<StorageController>, Logger<StorageController>>();
+builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IBlobRepository, BlobRepository>();
 builder.Services.AddScoped<ITopicService, TopicService>();
 
 var app = builder.Build();
