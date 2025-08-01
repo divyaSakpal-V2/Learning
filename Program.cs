@@ -24,6 +24,7 @@ builder.Services.Configure<AzureFileLoggerOptions>(options => {
     options.FileName = "tryingfilelog-";
     options.RetainedFileCountLimit = 5;
     options.FileSizeLimit = 50 * 1024;
+    options.IsEnabled = true;
     });
 
 builder.Services.Configure<AzureBlobLoggerOptions>(options => {
